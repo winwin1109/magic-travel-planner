@@ -19,77 +19,80 @@
     
     <style>
         :root {
-            --theme-main: #8F9E8B;
-            --theme-bg: #F4F1EA;
-            --theme-accent: #6E5A4B;
-            --theme-border: #B5B5B5;
+            --theme-main: #7C9082;
+            --theme-bg: #F7F5F0;
+            --theme-accent: #5C5346;
+            --theme-border: #DCD7CC;
             --theme-table-bg: #FFFFFF;
         }
 
         body { font-family: 'PingFang HK', 'Microsoft JhengHei', sans-serif; background-color: #FAF9F6; color: #2C2C2C; margin: 0; padding: 20px; line-height: 1.4; transition: all 0.3s; }
-        .container { max-width: 1500px; margin: 0 auto; background-color: #FFFFFF; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .container { max-width: 1500px; margin: 0 auto; background-color: #FFFFFF; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); }
         
-        /* 頁籤 */
-        .tab-navigation { display: flex; border-bottom: 3px solid var(--theme-main); margin-bottom: 25px; gap: 5px; }
-        .tab-btn { padding: 12px 24px; font-size: 15px; font-weight: bold; background-color: var(--theme-bg); border: 1px solid var(--theme-border); border-bottom: none; border-radius: 6px 6px 0 0; cursor: pointer; color: var(--theme-accent); transition: 0.2s; }
-        .tab-btn.active { background-color: var(--theme-main); color: white; border-color: var(--theme-main); }
+        /* 頁籤 - 舒適自然配色 */
+        .tab-navigation { display: flex; border-bottom: 2px solid var(--theme-border); margin-bottom: 25px; gap: 6px; }
+        .tab-btn { padding: 12px 24px; font-size: 15px; font-weight: bold; background-color: transparent; border: 1px solid transparent; border-bottom: none; border-radius: 6px 6px 0 0; cursor: pointer; color: #777; transition: 0.2s; }
+        .tab-btn:hover { background-color: var(--theme-bg); color: var(--theme-accent); }
+        .tab-btn.active { background-color: var(--theme-bg); color: var(--theme-accent); border-color: var(--theme-border); border-bottom: 3px solid var(--theme-main); }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
         /* 面板與工具列 */
         .control-panel, .format-toolbar { background-color: var(--theme-bg); border: 1px solid var(--theme-border); padding: 15px 20px; border-radius: 6px; margin-bottom: 10px; display: flex; flex-wrap: wrap; gap: 15px; align-items: center; }
-        .format-toolbar { background-color: #FFF3E0; border-color: #FFCC80; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .format-toolbar { background-color: #FCF8F2; border-color: #E6DEC8; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
         .control-group { display: flex; align-items: center; gap: 8px; }
         label { font-size: 13px; font-weight: bold; color: var(--theme-accent); }
-        select, input[type="text"], input[type="date"], input[type="color"] { padding: 6px 10px; border: 1px solid var(--theme-border); border-radius: 4px; font-size: 13px; background-color: #FFFFFF; }
+        select, input[type="text"], input[type="date"], input[type="color"] { padding: 6px 10px; border: 1px solid var(--theme-border); border-radius: 4px; font-size: 13px; background-color: #FFFFFF; color: #333; }
         input[type="color"] { padding: 0; width: 35px; height: 30px; cursor: pointer; }
         
-        button.action-btn, button.export-btn { color: white; border: none; padding: 7px 14px; border-radius: 4px; font-size: 13px; cursor: pointer; font-weight: bold; }
-        button.action-btn { background-color: var(--theme-accent); }
-        button.export-btn { background-color: #4A7C59; }
-        button.action-btn:hover, button.export-btn:hover { filter: brightness(0.85); }
+        button.action-btn, button.export-btn { color: white; border: none; padding: 7px 14px; border-radius: 4px; font-size: 13px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        button.action-btn { background-color: var(--theme-main); }
+        button.export-btn { background-color: #5A8F76; }
+        button.action-btn:hover, button.export-btn:hover { filter: brightness(0.9); }
 
-        /* 標題區域 */
-        .title-section { text-align: center; margin-bottom: 25px; padding: 15px; }
-        .main-title-editable { font-size: 48px; font-weight: 900; outline: none; margin-bottom: 10px; color: var(--theme-accent); }
-        .sub-title-editable { font-size: 24px; font-weight: bold; color: #555; outline: none; }
+        /* 標題區域 - 純文字漸層不加底色 */
+        .title-section { text-align: center; margin-bottom: 25px; padding: 15px; background: transparent !important; }
+        .main-title-editable { font-size: 48px; font-weight: 900; outline: none; margin-bottom: 10px; color: var(--theme-accent); background: transparent !important; }
+        #displayMainTitleText { display: inline-block; padding: 2px 4px; }
+        .sub-title-editable { font-size: 24px; font-weight: bold; color: #666; outline: none; background: transparent !important; }
 
-        /* 萬用可編輯表格與卡片樣式 - 針對選取優化 */
+        /* 萬用可編輯表格與卡片樣式 */
         .editable-cell { outline: none; min-height: 40px; padding: 5px; border: 1px dashed transparent; transition: all 0.2s; border-radius: 4px; }
-        .editable-cell:hover { border-color: rgba(0,0,0,0.1); background-color: rgba(0,0,0,0.02); }
-        /* 正在編輯中的焦點樣式 */
-        .active-editing-cell { border: 2px dashed #1976D2 !important; background-color: rgba(25, 118, 210, 0.05) !important; }
+        .editable-cell:hover { border-color: rgba(0,0,0,0.12); }
+        /* 正在編輯中的焦點樣式 - 不強制覆蓋背景色以免影響主標題漸層與自訂淡粉底色 */
+        .active-editing-cell { border: 2px dashed #6B9AC4 !important; }
 
-        /* 表格排版 */
+        /* 表格排版 - 標題不加實心底色，改為自然清爽線條 */
         .overview-print-wrapper { width: 100%; overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; background-color: var(--theme-table-bg); margin-bottom: 15px; }
-        table th, table td { border: 2px solid var(--theme-border); padding: 10px; vertical-align: top; text-align: left; }
-        table th { background-color: var(--theme-main); color: white; font-weight: bold; text-align: center; }
+        table th, table td { border: 1.5px solid var(--theme-border); padding: 10px; vertical-align: top; text-align: left; }
+        table th { background-color: transparent !important; color: var(--theme-accent); font-weight: bold; text-align: center; border-bottom: 2.5px solid var(--theme-main); font-size: 15px; }
         
         /* 第一頁專屬 */
-        .overview-day-cell { height: 180px; position: relative; }
-        .date-label { font-weight: bold; font-size: 14px; margin-bottom: 6px; color: #333; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 3px; }
-        .hotel-table th { background-color: var(--theme-accent); color: white; }
+        .overview-day-cell { height: 180px; position: relative; transition: background-color 0.2s; }
+        .date-label { font-weight: bold; font-size: 14px; margin-bottom: 6px; color: var(--theme-accent); border-bottom: 1px solid rgba(0,0,0,0.08); padding-bottom: 3px; }
+        .hotel-table th { background-color: transparent !important; color: var(--theme-accent); border-bottom: 2.5px solid var(--theme-accent); }
 
-        /* 第二頁專屬 */
-        .itinerary-day-block { margin-bottom: 35px; background-color: var(--theme-table-bg); border: 2px solid var(--theme-border); border-radius: 8px; padding: 15px; page-break-inside: avoid; }
-        .itinerary-day-title { font-size: 18px; font-weight: bold; color: white; background-color: var(--theme-accent); padding: 10px 15px; margin: -15px -15px 15px -15px; border-radius: 6px 6px 0 0; }
-        .itinerary-table th { background-color: var(--theme-bg); color: var(--theme-accent); }
-        .reference-section { background-color: rgba(0,0,0,0.02); border: 1px dashed var(--theme-border); padding: 15px; border-radius: 4px; }
+        /* 第二頁專屬 - 標題去除深色底色 */
+        .itinerary-day-block { margin-bottom: 35px; background-color: var(--theme-table-bg); border: 1.5px solid var(--theme-border); border-radius: 8px; padding: 15px; page-break-inside: avoid; }
+        .itinerary-day-title { font-size: 19px; font-weight: bold; color: var(--theme-accent); background-color: transparent !important; padding: 6px 5px 12px 5px; margin: 0 0 15px 0; border-bottom: 2px solid var(--theme-main); border-radius: 0; }
+        .itinerary-table th { background-color: transparent !important; color: var(--theme-accent); border-bottom: 2px solid var(--theme-border); }
+        .reference-section { background-color: rgba(0,0,0,0.015); border: 1px dashed var(--theme-border); padding: 15px; border-radius: 4px; }
 
         /* 第三頁 Checklist */
         .checklist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
-        .checklist-card { background-color: var(--theme-table-bg); border: 2px solid var(--theme-border); border-radius: 8px; padding: 15px; page-break-inside: avoid; }
-        .checklist-category-title { font-size: 16px; font-weight: bold; color: var(--theme-accent); border-bottom: 2px solid var(--theme-main); padding-bottom: 6px; margin-top: 0; margin-bottom: 12px; display: flex; justify-content: space-between; }
+        .checklist-card { background-color: var(--theme-table-bg); border: 1.5px solid var(--theme-border); border-radius: 8px; padding: 15px; page-break-inside: avoid; }
+        .checklist-category-title { font-size: 16px; font-weight: bold; color: var(--theme-accent); background-color: transparent !important; border-bottom: 2px solid var(--theme-main); padding-bottom: 6px; margin-top: 0; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
         .checklist-item-row { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; position: relative; }
         .checklist-item-row:hover .delete-item-btn { display: inline-block; }
         .delete-item-btn { display: none; background: #FFCDD2; color: #C62828; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; cursor: pointer; line-height: 18px; text-align: center; padding: 0; margin-top: 2px; }
 
         /* 輔助工具 */
-        .emoji-bar, .template-bar { display: flex; flex-wrap: wrap; gap: 5px; background: #FFFFFF; padding: 8px; border-radius: 4px; border: 1px solid var(--theme-border); margin-bottom: 10px; align-items: center; }
-        .emoji-item { font-size: 18px; cursor: pointer; padding: 4px 8px; border-radius: 4px; transition: 0.1s; }
-        .emoji-item:hover { background-color: var(--theme-bg); }
-        .template-btn { background-color: #E8F0FE; color: #1A73E8; border: 1px solid #D2E3FC; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .emoji-bar, .template-bar { display: flex; flex-wrap: wrap; gap: 6px; background: #FFFFFF; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--theme-border); margin-bottom: 10px; align-items: center; }
+        .emoji-item { font-size: 19px; cursor: pointer; padding: 4px 7px; border-radius: 4px; transition: 0.15s; user-select: none; }
+        .emoji-item:hover { background-color: var(--theme-bg); transform: scale(1.15); }
+        .template-btn { background-color: #F0F4F8; color: #334E68; border: 1px solid #D9E2EC; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 13px; transition: 0.15s; }
+        .template-btn:hover { filter: brightness(0.95); transform: translateY(-1px); }
 
         /* 列印與匯出 */
         .no-print { display: block; }
@@ -99,7 +102,7 @@
             .container { box-shadow: none !important; padding: 0 !important; max-width: 100% !important; }
             table { table-layout: fixed !important; width: 100% !important; }
             .overview-day-cell { height: auto !important; min-height: 120px !important; }
-            .active-editing-cell { border: 1px dashed transparent !important; background-color: transparent !important; }
+            .active-editing-cell { border: 1px dashed transparent !important; }
             .tab-content { display: none !important; }
             .tab-content.active { display: block !important; }
         }
@@ -113,83 +116,109 @@
     
     <div class="control-panel no-print">
         <div class="control-group">
-            <label>1. 整體風格主題：</label>
+            <label>1. 舒適自然主題：</label>
             <select onchange="applyTheme(this.value)">
-                <option value="default">預設粉彩 (Default)</option>
-                <option value="monochrome">簡約黑白 (Monochrome)</option>
-                <option value="playful">活潑童趣 (Playful)</option>
-                <option value="forest">森林大地 (Forest)</option>
-                <option value="ocean">海洋微風 (Ocean)</option>
-                <option value="artistic" style="font-weight:bold; color:#A93226;">藝術油畫 (Artistic)</option>
-                <option value="fashion" style="font-weight:bold; color:#D4AC0D;">摩登時尚 (Fashion)</option>
-                <option value="morandi" style="font-weight:bold; color:#873600;">莫蘭迪美學 (Morandi)</option>
+                <option value="default">🌿 溫柔燕麥 (Default)</option>
+                <option value="monochrome">☁️ 北歐極簡 (Minimalist)</option>
+                <option value="playful">🌸 春日櫻粉 (Sakura)</option>
+                <option value="forest">🌲 森林晨霧 (Forest)</option>
+                <option value="ocean">🌊 微風淺海 (Ocean)</option>
+                <option value="morandi">🎨 莫蘭迪暖灰 (Morandi)</option>
+                <option value="artistic">🍂 秋日焦糖 (Caramel)</option>
+                <option value="fashion">🪻 薰衣草莊園 (Lavender)</option>
             </select>
         </div>
-        <div class="control-group" style="background:#FFF3E0; padding:5px 10px; border-radius:5px; border:1px solid #FFCC80;">
+        <div class="control-group" style="background:#FAF5EA; padding:5px 10px; border-radius:5px; border:1px solid #E6DEC8;">
             <label>2. 旅途區間：</label>
-            <input type="date" id="baseStartDate" value="2026-04-29" onchange="recalculateDates()">
+            <input type="date" id="baseStartDate" value="2026-04-29" onchange="onDateInputChange('start')">
             <span style="font-size:13px; font-weight:bold; color:var(--theme-accent);">至</span>
-            <input type="date" id="baseEndDate" value="2026-05-04" onchange="recalculateDates()">
+            <input type="date" id="baseEndDate" value="2026-05-04" onchange="onDateInputChange('end')">
         </div>
         <div class="control-group">
-            <label>主標題漸層色：</label>
+            <label>主標題文字漸層：</label>
             <select onchange="applyTitleGradient(this.value)">
-                <option value="none">無漸層</option>
+                <option value="none">無漸層 (純色)</option>
                 <option value="linear-gradient(45deg, #FF512F, #DD2476)">晚霞紅紫</option>
                 <option value="linear-gradient(45deg, #1CB5E0, #000851)">深海冰藍</option>
                 <option value="linear-gradient(45deg, #11998e, #38ef7d)">森林翠綠</option>
                 <option value="linear-gradient(45deg, #C0392B, #8E44AD)">藝術油彩</option>
-                <option value="linear-gradient(45deg, #D4AF37, #111111)">時尚黑金</option>
+                <option value="linear-gradient(45deg, #D4AF37, #2C3E50)">時尚黑金</option>
+                <option value="linear-gradient(45deg, #E8998D, #A16882)">玫瑰晨曦</option>
             </select>
         </div>
         <div class="control-group">
             <label>副標題顏色：</label>
-            <input type="color" value="#555555" onchange="document.getElementById('displaySubTitle').style.color = this.value">
+            <input type="color" value="#666666" onchange="document.getElementById('displaySubTitle').style.color = this.value">
         </div>
         <div class="control-group" style="margin-left: auto; background: #fff; padding: 5px; border-radius: 5px; border: 1px solid #ddd; display: flex; gap: 5px;">
-            <button class="export-btn" style="background-color: #D32F2F;" onclick="resetPlanner()">🔄 重新整理清空</button>
-            <button class="export-btn" style="background-color: #00897B;" onclick="saveToLocal()">💾 儲存至 App</button>
+            <button class="export-btn" style="background-color: #C85A5A;" onclick="resetPlanner()">🔄 重新整理清空</button>
+            <button class="export-btn" style="background-color: #4A8B71;" onclick="saveToLocal()">💾 儲存至 App</button>
             <select id="exportPageSize">
                 <option value="a3-portrait">A3 縱向匯出</option>
                 <option value="a4-portrait">A4 縱向匯出</option>
                 <option value="a4-landscape">A4 橫向匯出</option>
             </select>
             <button class="export-btn" onclick="triggerPDFExport()">📥 PDF</button>
-            <button class="export-btn" style="background-color: #2B579A;" onclick="triggerWordExport()">📥 WORD</button>
+            <button class="export-btn" style="background-color: #4A6B9C;" onclick="triggerWordExport()">📥 WORD</button>
         </div>
     </div>
 
     <div class="format-toolbar no-print">
-        <label style="color: #E65100; font-size: 15px;">🖍️ 獨立內容格式區：</label>
-        <span style="font-size: 13px; color: #555;">(請先點擊下方任意「文字格」，再使用此處工具)</span>
+        <label style="color: #8C6239; font-size: 15px;">🖍️ 獨立內容與格子格式區：</label>
+        <span style="font-size: 12px; color: #666;">(可<b>反白局部文字</b>或<b>點擊格子</b>獨立調整)</span>
         
-        <div style="border-left: 2px solid #FFCC80; padding-left: 15px; display: flex; gap: 10px; align-items: center;">
+        <div style="border-left: 2px solid #E6DEC8; padding-left: 15px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
             <label>文字顏色:</label>
-            <input type="color" id="cellTextColorPicker" onchange="modifyActiveCell('color', this.value)">
+            <input type="color" id="cellTextColorPicker" oninput="modifyActiveCell('color', this.value)" onchange="modifyActiveCell('color', this.value)">
             
             <label>字體大小:</label>
-            <select onchange="modifyActiveCell('fontSize', this.value)">
-                <option value="">預設</option>
+            <select onchange="modifyActiveCell('fontSize', this.value); this.selectedIndex=0;">
+                <option value="" disabled selected>選擇大小...</option>
+                <option value="default">還原預設</option>
                 <option value="12px">12px (極小)</option>
                 <option value="14px">14px (標準)</option>
                 <option value="16px">16px (稍微放大)</option>
-                <option value="18px">18px (大)</option>
-                <option value="20px">20px (特大)</option>
-                <option value="24px">24px (標題級)</option>
-                <option value="30px">30px (巨無霸)</option>
+                <option value="18px">18px (中大)</option>
+                <option value="20px">20px (大)</option>
+                <option value="24px">24px (小標題級)</option>
+                <option value="30px">30px (中標題級)</option>
+                <option value="36px">36px (大標題級 +1)</option>
+                <option value="42px">42px (特大標題 +2)</option>
+                <option value="48px">48px (主標題級 +3)</option>
+                <option value="56px">56px (超大海報級 +4)</option>
+                <option value="64px">64px (巨無霸級 +5)</option>
             </select>
 
             <label>獨立字體:</label>
-            <select onchange="modifyActiveCell('fontFamily', this.value)">
-                <option value="">還原預設字體</option>
+            <select onchange="modifyActiveCell('fontFamily', this.value); this.selectedIndex=0;">
+                <option value="" disabled selected>選擇字體...</option>
+                <option value="default">還原預設字體</option>
                 <option value="'ZCOOL KuaiLe', sans-serif">快樂童趣體</option>
                 <option value="'Ma Shan Zheng', cursive">手寫隨性體</option>
                 <option value="'ZCOOL XiaoWei', serif">優雅文藝體</option>
                 <option value="'Arial Rounded MT Bold', sans-serif">微軟圓體</option>
             </select>
             
-            <button class="action-btn" style="background-color: #EF6C00;" onclick="toggleActiveCellWeight()"><b>粗體切換</b></button>
-            <button class="action-btn" style="background-color: #EF6C00;" onclick="toggleActiveCellStyle()"><i>斜體切換</i></button>
+            <button class="action-btn" style="background-color: #9C7A5B;" onmousedown="event.preventDefault()" onclick="toggleActiveCellWeight()"><b>粗體</b></button>
+            <button class="action-btn" style="background-color: #9C7A5B;" onmousedown="event.preventDefault()" onclick="toggleActiveCellStyle()"><i>斜體</i></button>
+
+            <span style="border-left: 2px solid #E6DEC8; padding-left: 12px; display: inline-flex; align-items: center; gap: 6px;">
+                <label>🎨 獨立格子底色 (10款淡粉系)：</label>
+                <select onchange="modifyActiveCell('backgroundColor', this.value); this.selectedIndex=0;">
+                    <option value="" disabled selected>選擇淡粉底色...</option>
+                    <option value="transparent">⚪ 預設透明 (無底色)</option>
+                    <option value="#FDE8E8" style="background-color:#FDE8E8;">🌸 1. 櫻花粉 (Sakura Pink)</option>
+                    <option value="#FFF0E5" style="background-color:#FFF0E5;">🍑 2. 蜜桃粉 (Peach Cream)</option>
+                    <option value="#FDF9DE" style="background-color:#FDF9DE;">🍋 3. 奶油檸檬 (Butter Yellow)</option>
+                    <option value="#E8F6EE" style="background-color:#E8F6EE;">🌿 4. 薄荷粉綠 (Mint Green)</option>
+                    <option value="#EBF4FA" style="background-color:#EBF4FA;">💧 5. 迷霧粉藍 (Baby Blue)</option>
+                    <option value="#F3ECF8" style="background-color:#F3ECF8;">🪻 6. 薰衣草粉紫 (Lavender)</option>
+                    <option value="#F7EFE6" style="background-color:#F7EFE6;">🧋 7. 奶茶粉杏 (Milk Tea)</option>
+                    <option value="#FDECE6" style="background-color:#FDECE6;">🪸 8. 珊瑚粉橘 (Coral Blush)</option>
+                    <option value="#EDF2EB" style="background-color:#EDF2EB;">🍃 9. 鼠尾草粉綠 (Sage Mist)</option>
+                    <option value="#F9E8F0" style="background-color:#F9E8F0;">🌷 10. 玫瑰粉紅 (Rose Quartz)</option>
+                </select>
+            </span>
         </div>
     </div>
 
@@ -202,45 +231,75 @@
     <div id="dynamic-planner-core">
         
         <div class="title-section" id="print-title-area">
-            <div id="displayMainTitle" class="main-title-editable" contenteditable="true">Magic Travel Planner</div>
-            <div id="displaySubTitle" class="sub-title-editable" contenteditable="true">在此輸入您的專屬行程副標題...</div>
+            <div id="displayMainTitle" class="main-title-editable editable-cell" contenteditable="true"><span id="displayMainTitleText">Magic Travel Planner</span></div>
+            <div id="displaySubTitle" class="sub-title-editable editable-cell" contenteditable="true">在此輸入您的專屬行程副標題...</div>
         </div>
 
         <div id="tab-page1" class="tab-content active">
             <div class="no-print" style="margin-bottom: 15px;">
                 <div class="emoji-bar">
-                    <label>快速貼上工具 (先點格子再點按鈕)：</label>
-                    <span id="emojiList">
-                        <span class="emoji-item" onclick="insertHtmlToFocused('🚗')">🚗</span>
-                        <span class="emoji-item" onclick="insertHtmlToFocused('✈️')">✈️</span>
-                        <span class="emoji-item" onclick="insertHtmlToFocused('🏨')">🏨</span>
-                        <span class="emoji-item" onclick="insertHtmlToFocused('🍱')">🍱</span>
-                        <span class="emoji-item" onclick="insertHtmlToFocused('📸')">📸</span>
-                        <span class="emoji-item" onclick="insertHtmlToFocused('♨️')">♨️</span>
+                    <label>✨ 旅行小圖示 (先點格子再點圖示)：</label>
+                    <span id="emojiList" style="display: flex; flex-wrap: wrap; gap: 2px;">
+                        <!-- 交通 -->
+                        <span class="emoji-item" title="自駕/租車" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('🚗')">🚗</span>
+                        <span class="emoji-item" title="飛機/航班" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('✈️')">✈️</span>
+                        <span class="emoji-item" title="高鐵/新幹線" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('🚄')">🚄</span>
+                        <span class="emoji-item" title="火車/鐵道" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('🚆')">🚆</span>
+                        <span class="emoji-item" title="地鐵/捷運" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('🚇')">🚇</span>
+                        <span class="emoji-item" title="巴士/客運" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('🚌')">🚌</span>
+                        <span class="emoji-item" title="計程車/Uber" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('🚕')">🚕</span>
+                        <span class="emoji-item" title="渡輪/遊船" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('⛴️')">⛴️</span>
+                        <span class="emoji-item" title="單車" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('🚲')">🚲</span>
+                        <span class="emoji-item" title="纜車" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('🚡')">🚡</span>
+                        <!-- 住宿與放鬆 -->
+                        <span class="emoji-item" title="酒店/住宿" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('🏨')">🏨</span>
+                        <span class="emoji-item" title="露營" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('⛺')">⛺</span>
+                        <span class="emoji-item" title="溫泉/泡湯" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('♨️')">♨️</span>
+                        <!-- 美食與餐飲 -->
+                        <span class="emoji-item" title="便當/定食" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('🍱')">🍱</span>
+                        <span class="emoji-item" title="拉麵/麵食" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('🍜')">🍜</span>
+                        <span class="emoji-item" title="壽司/海鮮" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('🍣')">🍣</span>
+                        <span class="emoji-item" title="燒肉/牛排" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('🥩')">🥩</span>
+                        <span class="emoji-item" title="火鍋/鍋物" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('🍲')">🍲</span>
+                        <span class="emoji-item" title="咖啡廳/早午餐" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('☕')">☕</span>
+                        <span class="emoji-item" title="甜點/下午茶" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('🍰')">🍰</span>
+                        <span class="emoji-item" title="冰淇淋" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('🍦')">🍦</span>
+                        <span class="emoji-item" title="居酒屋/小酌" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('🍺')">🍺</span>
+                        <!-- 景點與活動 -->
+                        <span class="emoji-item" title="拍照打卡" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('📸')">📸</span>
+                        <span class="emoji-item" title="神社/鳥居" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('⛩️')">⛩️</span>
+                        <span class="emoji-item" title="城堡/古蹟" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('🏰')">🏰</span>
+                        <span class="emoji-item" title="主題樂園" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('🎡')">🎡</span>
+                        <span class="emoji-item" title="地標鐵塔" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('🗼')">🗼</span>
+                        <span class="emoji-item" title="山岳/自然景觀" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('🗻')">🗻</span>
+                        <span class="emoji-item" title="賞櫻/花卉" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('🌸')">🌸</span>
+                        <span class="emoji-item" title="賞楓/秋葉" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('🍁')">🍁</span>
+                        <span class="emoji-item" title="雪景/玩雪" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('❄️')">❄️</span>
+                        <span class="emoji-item" title="海灘/渡假" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('🏖️')">🏖️</span>
+                        <span class="emoji-item" title="逛街購物" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('🛍️')">🛍️</span>
+                        <span class="emoji-item" title="門票/票券" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('🎫')">🎫</span>
+                        <span class="emoji-item" title="健行/登山" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('🥾')">🥾</span>
+                        <span class="emoji-item" title="滑雪" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('⛷️')">⛷️</span>
+                        <span class="emoji-item" title="水上活動/浮潛" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('🤿')">🤿</span>
+                        <span class="emoji-item" title="貼心提醒" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('💡')">💡</span>
+                        <span class="emoji-item" title="重要注意" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('⚠️')">⚠️</span>
                     </span>
                     
-                    <span class="custom-emoji-adder no-print" style="margin-left: 5px; display: inline-flex; align-items: center; gap: 5px; border-left: 1px solid #ccc; padding-left: 10px;">
+                    <span class="custom-emoji-adder no-print" style="margin-left: auto; display: inline-flex; align-items: center; gap: 5px; border-left: 1px solid #ddd; padding-left: 10px;">
                         <input type="text" id="customEmojiInput" placeholder="自訂文字/圖示" style="width: 100px; padding: 4px; font-size: 13px;">
-                        <button class="action-btn" style="padding: 4px 8px; font-size: 12px; background-color: var(--theme-main);" onclick="addCustomEmoji()">+ 新增工具</button>
-                    </span>
-                    
-                    <span style="margin-left: auto; display: flex; align-items: center; gap: 5px;">
-                        <label>獨立更改此格背景色：</label>
-                        <select onchange="modifyActiveCell('backgroundColor', this.value)">
-                            <option value="transparent">預設透明</option>
-                            <option value="#E8F5E9">粉綠色</option>
-                            <option value="#FFE0B2">粉橙色</option>
-                            <option value="#E1BEE7">粉紫色</option>
-                            <option value="#E3F2FD">粉藍色</option>
-                            <option value="#FFEBEE">粉紅色</option>
-                            <option value="#FFF9C4">淺黃色</option>
-                        </select>
+                        <button class="action-btn" style="padding: 4px 8px; font-size: 12px;" onclick="addCustomEmoji()">+ 新增工具</button>
                     </span>
                 </div>
+
                 <div class="template-bar">
-                    <button class="template-btn" onclick="insertHtmlToFocused('<br><br>✈️ 出發航班<br>Flight: <br>00:00 - 00:00')">＋ 貼上去程航班</button>
-                    <button class="template-btn" onclick="insertHtmlToFocused('<br><br>✈️ 回程航班<br>Flight: <br>00:00 - 00:00')">＋ 貼上回程航班</button>
-                    <button class="template-btn" style="background-color: #E2F2E4; color: #2E7D32; border-color: #C8E6C9;" onclick="insertHtmlToFocused('<br><br>🚗 租車預約<br>單號: ')">＋ 租車預約</button>
+                    <label style="margin-right: 4px;">📋 快速貼上模板：</label>
+                    <button class="template-btn" onmousedown="event.preventDefault()" onclick="insertOutboundFlight()">✈️ 貼上去程航班</button>
+                    <button class="template-btn" onmousedown="event.preventDefault()" onclick="insertInboundFlight()">✈️ 貼上回程航班</button>
+                    <button class="template-btn" style="background-color: #EBF5EE; color: #2D6A4F; border-color: #C7E5D1;" onmousedown="event.preventDefault()" onclick="insertHtmlToFocused('<br><br>🚗 <b>租車預約</b><br>單號：')">🚗 租車預約</button>
+                    <button class="template-btn" style="background-color: #FFF4E6; color: #B45309; border-color: #FCD34D;" onmousedown="event.preventDefault()" onclick="insertTransitTemplate()">🔄 移動路線標籤</button>
+                    <button class="template-btn" style="background-color: #FDF2F8; color: #9D174D; border-color: #FBCFE8;" onmousedown="event.preventDefault()" onclick="insertFunBullets(1)">🌟 趣味點列 (星光打卡)</button>
+                    <button class="template-btn" style="background-color: #F3E8FF; color: #6B21A8; border-color: #E9D5FF;" onmousedown="event.preventDefault()" onclick="insertFunBullets(2)">🐾 趣味點列 (漫步探索)</button>
+                    <button class="template-btn" style="background-color: #FEF2F2; color: #991B1B; border-color: #FECACA;" onmousedown="event.preventDefault()" onclick="insertFunBullets(3)">💖 趣味點列 (必去清單)</button>
                 </div>
             </div>
 
@@ -254,7 +313,7 @@
             </div>
 
             <div class="hotel-row-section" style="margin-top: 25px;">
-                <h3 style="font-size: 16px; margin-bottom: 8px; display: flex; justify-content: space-between;">
+                <h3 style="font-size: 16px; margin-bottom: 8px; display: flex; justify-content: space-between; color: var(--theme-accent);">
                     <span>🏨 住宿飯店對照明細 
                         <button class="action-btn no-print" style="margin-left:10px; background-color: var(--theme-main); padding: 4px 8px; font-size: 11px;" onclick="updateHotelDates()">🔄 手動同步入住日期</button>
                         <span style="font-size:12px; color:#666; font-weight:normal; margin-left:8px;">(修改天數後，點此重算區間)</span>
@@ -264,27 +323,32 @@
                 <table class="hotel-table">
                     <thead><tr><th style="width: 15%;">天數 (可編輯數字)</th><th style="width: 25%;">入住區間 (自動計算)</th><th style="width: 50%;">酒店資訊</th><th style="width: 10%;" class="no-print">操作</th></tr></thead>
                     <tbody id="hotelTableBody">
-                        <tr><td><div class="editable-cell" contenteditable="true">1 Day</div></td><td><div class="editable-cell" contenteditable="true">YYYY/MM/DD</div></td><td><div class="editable-cell" contenteditable="true">點此輸入飯店名稱...</div></td><td class="no-print" style="text-align:center;"><button class="action-btn" style="background-color:#D32F2F;" onclick="this.parentElement.parentElement.remove(); updateHotelDates();">刪除</button></td></tr>
+                        <tr><td><div class="editable-cell" contenteditable="true">1 Day</div></td><td><div class="editable-cell" contenteditable="true">YYYY/MM/DD</div></td><td><div class="editable-cell" contenteditable="true">點此輸入飯店名稱...</div></td><td class="no-print" style="text-align:center;"><button class="action-btn" style="background-color:#C85A5A;" onclick="this.parentElement.parentElement.remove(); updateHotelDates();">刪除</button></td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
         <div id="tab-page2" class="tab-content">
-            <div class="no-print" style="margin-bottom: 15px; padding: 10px; background: #E3F2FD; border-radius: 6px; border: 1px solid #90CAF9;">
-                <label>📸 行程表相片上傳：</label>
-                <button class="action-btn" style="background-color: #1976D2;" onclick="triggerImageUpload()">
-                    先點選下方表格，再按此上傳相片
+            <div class="no-print" style="margin-bottom: 15px; padding: 10px 15px; background: #F0F4F8; border-radius: 6px; border: 1px solid #D9E2EC; display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+                <label>📸 行程表相片與快速工具：</label>
+                <button class="action-btn" style="background-color: #4A6B9C;" onclick="triggerImageUpload()">
+                    🖼️ 上傳相片至所選格子
                 </button>
+                <button class="template-btn" style="background-color: #FFF4E6; color: #B45309; border-color: #FCD34D;" onmousedown="event.preventDefault()" onclick="insertTransitTemplate()">🔄 插入移動路線</button>
+                <button class="template-btn" style="background-color: #FDF2F8; color: #9D174D; border-color: #FBCFE8;" onmousedown="event.preventDefault()" onclick="insertFunBullets(1)">🌟 星光點列</button>
+                <button class="template-btn" style="background-color: #F3E8FF; color: #6B21A8; border-color: #E9D5FF;" onmousedown="event.preventDefault()" onclick="insertFunBullets(2)">🐾 漫步點列</button>
+                <button class="template-btn" style="background-color: #FEF2F2; color: #991B1B; border-color: #FECACA;" onmousedown="event.preventDefault()" onclick="insertFunBullets(3)">💖 必去點列</button>
             </div>
             <div id="detailedItineraryContainer"></div>
         </div>
 
         <div id="tab-page3" class="tab-content">
-            <div class="no-print" style="margin-bottom: 15px;">
+            <div class="no-print" style="margin-bottom: 15px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px;">
                 <input type="text" id="newCategoryName" placeholder="輸入新分類名稱...">
                 <button class="action-btn" onclick="addChecklistCategory()">➕ 建立新分類卡片</button>
-                <span style="font-size: 13px; color: #666; margin-left: 10px;">(若要單頁滿版，請在最上方匯出設定選擇「A4橫向」)</span>
+                <button class="action-btn" style="background-color: #5A8F76;" onclick="restoreChecklistCategory()">↩ 恢復已刪分類卡片</button>
+                <span style="font-size: 13px; color: #666; margin-left: 6px;">(每個分類卡片右上角亦可「↩ 恢復」該類別內誤刪的項目；若要單頁滿版匯出請選「A4橫向」)</span>
             </div>
             <div class="checklist-grid" id="checklistGridContainer"></div>
         </div>
@@ -302,21 +366,34 @@
       });
     }
 
+    // 柔和舒適自然配色主題（搭配無底色標題）
     const themes = {
-        default: { '--theme-main': '#8F9E8B', '--theme-bg': '#F4F1EA', '--theme-accent': '#6E5A4B', '--theme-border': '#B5B5B5', '--theme-table-bg': '#FFFFFF' },
-        monochrome: { '--theme-main': '#444444', '--theme-bg': '#F0F0F0', '--theme-accent': '#000000', '--theme-border': '#000000', '--theme-table-bg': '#FFFFFF' },
-        playful: { '--theme-main': '#FF96A5', '--theme-bg': '#FFF0F5', '--theme-accent': '#D81B60', '--theme-border': '#FFB6C1', '--theme-table-bg': '#FFFDFD' },
-        forest: { '--theme-main': '#2E8B57', '--theme-bg': '#E8F5E9', '--theme-accent': '#1B5E20', '--theme-border': '#81C784', '--theme-table-bg': '#F1F8E9' },
-        ocean: { '--theme-main': '#00ACC1', '--theme-bg': '#E0F7FA', '--theme-accent': '#006064', '--theme-border': '#4DD0E1', '--theme-table-bg': '#F2FBFD' },
-        artistic: { '--theme-main': '#2C3E50', '--theme-bg': '#F4F1EA', '--theme-accent': '#A93226', '--theme-border': '#85929E', '--theme-table-bg': '#FFFFFF' },
-        fashion: { '--theme-main': '#111111', '--theme-bg': '#F9F9F9', '--theme-accent': '#D4AC0D', '--theme-border': '#CCCCCC', '--theme-table-bg': '#FFFFFF' },
-        morandi: { '--theme-main': '#B2BABB', '--theme-bg': '#F5EEF8', '--theme-accent': '#873600', '--theme-border': '#D5DBDB', '--theme-table-bg': '#FDEDEC' }
+        default: { '--theme-main': '#7C9082', '--theme-bg': '#F7F5F0', '--theme-accent': '#5C5346', '--theme-border': '#DCD7CC', '--theme-table-bg': '#FFFFFF' },
+        monochrome: { '--theme-main': '#7F8C8D', '--theme-bg': '#F5F6F7', '--theme-accent': '#2C3E50', '--theme-border': '#D5D8DC', '--theme-table-bg': '#FFFFFF' },
+        playful: { '--theme-main': '#E5989B', '--theme-bg': '#FFF8F8', '--theme-accent': '#8E5557', '--theme-border': '#F2D0D2', '--theme-table-bg': '#FFFFFF' },
+        forest: { '--theme-main': '#6B8E78', '--theme-bg': '#F2F7F4', '--theme-accent': '#3B5244', '--theme-border': '#C8DDD0', '--theme-table-bg': '#FFFFFF' },
+        ocean: { '--theme-main': '#6FA8B8', '--theme-bg': '#F2F8FA', '--theme-accent': '#3A606E', '--theme-border': '#C5DEE6', '--theme-table-bg': '#FFFFFF' },
+        morandi: { '--theme-main': '#9E948C', '--theme-bg': '#F6F4F2', '--theme-accent': '#5E5650', '--theme-border': '#DED8D2', '--theme-table-bg': '#FFFFFF' },
+        artistic: { '--theme-main': '#C48B71', '--theme-bg': '#FAF5F0', '--theme-accent': '#7A4E3B', '--theme-border': '#E6D2C5', '--theme-table-bg': '#FFFFFF' },
+        fashion: { '--theme-main': '#9B8EA9', '--theme-bg': '#F7F5FA', '--theme-accent': '#564B63', '--theme-border': '#DCD6E4', '--theme-table-bg': '#FFFFFF' }
     };
 
-    // 清空為預設空陣列，作為乾淨的模板
     const presetItineraryTexts = [];
 
-    // 還原為最原始超詳細的 Check List 內容
+    // 10 款舒適淡粉色系預設值
+    const softPastelPalette = [
+        "#FDE8E8", // 1. 櫻花粉
+        "#FFF0E5", // 2. 蜜桃粉
+        "#FDF9DE", // 3. 奶油檸檬
+        "#E8F6EE", // 4. 薄荷粉綠
+        "#EBF4FA", // 5. 迷霧粉藍
+        "#F3ECF8", // 6. 薰衣草粉紫
+        "#F7EFE6", // 7. 奶茶粉杏
+        "#FDECE6", // 8. 珊瑚粉橘
+        "#EDF2EB", // 9. 鼠尾草粉綠
+        "#F9E8F0"  // 10. 玫瑰粉紅
+    ];
+
     const fullChecklistData = {
         "證件": ["身份證", "特區護照", "證件COPIES", "機票", "行程表", "日文上課書X1", "旅遊書X1", "國際駕駛執照", "日本交通卡X2"],
         "攝影工具": ["相機X2(大小各一)", "DJI pocket3", "360CAM", "DJI NEO"],
@@ -332,27 +409,56 @@
     };
 
     let activeCell = null;
+    let savedRange = null;
     let currentActiveTab = 'page1';
+    let deletedCategoriesStack = []; // 儲存被刪除的整張分類卡片紀錄
 
     window.onload = function() {
-        // 先嘗試從 LocalStorage 載入資料
         const loaded = loadFromLocal();
         
-        // 如果沒有儲存過的資料，才載入預設畫面
         if (!loaded) {
             recalculateDates();
             renderChecklist();
         }
         
         document.addEventListener('click', function(e) {
-            if(e.target.closest('.editable-cell') || e.target.classList.contains('editable-cell')) {
+            const cell = e.target.closest('.editable-cell') || (e.target.classList.contains('editable-cell') ? e.target : null);
+            const td = e.target.closest('td.overview-day-cell');
+            if (cell) {
                 document.querySelectorAll('.editable-cell').forEach(c => c.classList.remove('active-editing-cell'));
-                activeCell = e.target.closest('.editable-cell') || e.target;
+                activeCell = cell;
                 activeCell.classList.add('active-editing-cell');
                 
                 let currentColor = rgb2hex(activeCell.style.color);
                 if (currentColor && document.getElementById('cellTextColorPicker')) {
                     document.getElementById('cellTextColorPicker').value = currentColor;
+                }
+            } else if (td) {
+                const innerEditable = td.querySelector('.editable-cell');
+                if (innerEditable) {
+                    document.querySelectorAll('.editable-cell').forEach(c => c.classList.remove('active-editing-cell'));
+                    activeCell = innerEditable;
+                    activeCell.classList.add('active-editing-cell');
+                }
+            }
+        });
+
+        document.addEventListener('selectionchange', function() {
+            const sel = window.getSelection();
+            if (sel && sel.rangeCount > 0) {
+                const range = sel.getRangeAt(0);
+                let container = range.commonAncestorContainer;
+                if (container.nodeType === 3) container = container.parentNode;
+                const editable = container.closest ? container.closest('.editable-cell') : null;
+                if (editable) {
+                    activeCell = editable;
+                    document.querySelectorAll('.editable-cell').forEach(c => c.classList.remove('active-editing-cell'));
+                    activeCell.classList.add('active-editing-cell');
+                    if (!range.collapsed) {
+                        savedRange = range.cloneRange();
+                    } else {
+                        savedRange = null;
+                    }
                 }
             }
         });
@@ -362,7 +468,6 @@
     function saveToLocal() {
         clearActiveCellOutline();
         
-        // 將動態表單元素狀態寫入 HTML 屬性
         document.querySelectorAll('#dynamic-planner-core input').forEach(input => {
             if (input.type === 'text' || input.type === 'date' || input.type === 'color') {
                 input.setAttribute('value', input.value);
@@ -384,7 +489,8 @@
             startDate: document.getElementById('baseStartDate').value,
             endDate: document.getElementById('baseEndDate').value,
             titleGradient: document.querySelector('select[onchange="applyTitleGradient(this.value)"]').value,
-            activeTab: currentActiveTab
+            activeTab: currentActiveTab,
+            deletedCategoriesStack: deletedCategoriesStack
         };
         
         localStorage.setItem('magicPlannerData', JSON.stringify(saveData));
@@ -398,21 +504,35 @@
                 const savedData = JSON.parse(savedDataStr);
                 document.getElementById('dynamic-planner-core').innerHTML = savedData.plannerHTML;
                 
-                // 還原控制面板狀態
-                if (savedData.theme) {
+                // 確保舊版紀錄中的主標題也有內層 span 以支援純文字漸層
+                const titleEl = document.getElementById('displayMainTitle');
+                if (titleEl && !document.getElementById('displayMainTitleText')) {
+                    titleEl.innerHTML = `<span id="displayMainTitleText">${titleEl.innerHTML}</span>`;
+                }
+
+                // 相容性升級：確保載入的卡片都具備「恢復」與「刪除」雙按鈕及刪除紀錄功能
+                upgradeExistingChecklistCards();
+                if (savedData.deletedCategoriesStack) {
+                    deletedCategoriesStack = savedData.deletedCategoriesStack;
+                }
+
+                if (savedData.theme && themes[savedData.theme]) {
                     document.querySelector('select[onchange="applyTheme(this.value)"]').value = savedData.theme;
                     applyTheme(savedData.theme);
                 }
                 if (savedData.startDate) document.getElementById('baseStartDate').value = savedData.startDate;
                 if (savedData.endDate) document.getElementById('baseEndDate').value = savedData.endDate;
                 if (savedData.titleGradient) {
-                    document.querySelector('select[onchange="applyTitleGradient(this.value)"]').value = savedData.titleGradient;
+                    const gradSelect = document.querySelector('select[onchange="applyTitleGradient(this.value)"]');
+                    if (gradSelect) {
+                        gradSelect.value = savedData.titleGradient;
+                        applyTitleGradient(savedData.titleGradient);
+                    }
                 }
                 if (savedData.activeTab) {
                     switchActiveTab(savedData.activeTab);
                 }
                 
-                // 還原副標題顏色選取器狀態
                 const subTitle = document.getElementById('displaySubTitle');
                 if (subTitle && subTitle.style.color) {
                     document.querySelector('input[type="color"][onchange*="displaySubTitle"]').value = rgb2hex(subTitle.style.color);
@@ -432,8 +552,8 @@
             location.reload();
         }
     }
-    // ===================================================================
 
+    // ==================== 獨立內容與局部文字格式調整邏輯 ====================
     function rgb2hex(rgb) {
         if (!rgb || rgb.indexOf("rgb") === -1) return "#2c2c2c";
         rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
@@ -441,37 +561,188 @@
         return rgb ? "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]) : "#2c2c2c";
     }
 
+    function hasValidTextSelection() {
+        const sel = window.getSelection();
+        if (sel && sel.rangeCount > 0 && !sel.getRangeAt(0).collapsed) {
+            const range = sel.getRangeAt(0);
+            let container = range.commonAncestorContainer;
+            if (container.nodeType === 3) container = container.parentNode;
+            if (container.closest && container.closest('.editable-cell')) {
+                savedRange = range.cloneRange();
+                return true;
+            }
+        }
+        if (savedRange && !savedRange.collapsed && activeCell && activeCell.contains(savedRange.commonAncestorContainer)) {
+            return true;
+        }
+        return false;
+    }
+
+    function applyStyleToSelection(styleProperty, value) {
+        if (!savedRange) return;
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(savedRange);
+
+        const range = sel.getRangeAt(0);
+        if (range.collapsed) return;
+
+        let parentEl = range.commonAncestorContainer;
+        if (parentEl.nodeType === 3) parentEl = parentEl.parentNode;
+        if (parentEl && parentEl.tagName === 'SPAN' && parentEl.id !== 'displayMainTitleText' && !parentEl.classList.contains('editable-cell') && parentEl.innerText === range.toString()) {
+            parentEl.style[styleProperty] = (value === 'default') ? '' : value;
+            savedRange = range.cloneRange();
+            return;
+        }
+
+        const span = document.createElement('span');
+        span.style[styleProperty] = (value === 'default') ? '' : value;
+
+        const fragment = range.extractContents();
+        fragment.querySelectorAll('*').forEach(el => {
+            if (el.style && el.style[styleProperty]) {
+                el.style[styleProperty] = '';
+            }
+        });
+        span.appendChild(fragment);
+        range.insertNode(span);
+
+        const newRange = document.createRange();
+        newRange.selectNodeContents(span);
+        sel.removeAllRanges();
+        sel.addRange(newRange);
+        savedRange = newRange.cloneRange();
+    }
+
     function modifyActiveCell(styleProperty, value) {
-        if (!activeCell) { alert('💡 請先點擊下方的任何一段文字格子 (會出現藍色虛線框)，再來使用此排版工具！'); return; }
-        activeCell.style[styleProperty] = value;
+        if (!activeCell) {
+            alert('💡 請先點擊下方的任何一個格子，或反白選取文字，再來使用此排版工具！');
+            return;
+        }
+        if (styleProperty === 'backgroundColor') {
+            if (activeCell.id === 'displayMainTitle' || activeCell.id === 'displaySubTitle') {
+                return alert('💡 主副標題保持無底色設計，請點選下方的行程表格或卡片來更改格子底色！');
+            }
+            const parentTd = activeCell.closest('td');
+            if (parentTd) {
+                parentTd.style.backgroundColor = value;
+                activeCell.style.backgroundColor = 'transparent';
+            } else {
+                activeCell.style.backgroundColor = value;
+            }
+            return;
+        }
+
+        if (styleProperty === 'color' && activeCell.id === 'displayMainTitle' && !hasValidTextSelection()) {
+            const titleTextSpan = document.getElementById('displayMainTitleText');
+            if (titleTextSpan) {
+                titleTextSpan.style.backgroundImage = 'none';
+                titleTextSpan.style.webkitBackgroundClip = 'initial';
+                titleTextSpan.style.webkitTextFillColor = 'initial';
+                titleTextSpan.style.color = value;
+            }
+            activeCell.style.color = value;
+            return;
+        }
+
+        if (hasValidTextSelection()) {
+            applyStyleToSelection(styleProperty, value);
+        } else {
+            activeCell.style[styleProperty] = (value === 'default') ? '' : value;
+        }
     }
 
     function toggleActiveCellWeight() {
-        if (!activeCell) return alert('請先點擊要修改的文字格子！');
-        activeCell.style.fontWeight = (activeCell.style.fontWeight === 'bold') ? 'normal' : 'bold';
+        if (!activeCell) return alert('請先點擊要修改的文字格子或反白選取文字！');
+        if (hasValidTextSelection()) {
+            const sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(savedRange);
+            document.execCommand('bold', false, null);
+            if (sel.rangeCount > 0) savedRange = sel.getRangeAt(0).cloneRange();
+        } else {
+            activeCell.style.fontWeight = (activeCell.style.fontWeight === 'bold') ? 'normal' : 'bold';
+        }
     }
 
     function toggleActiveCellStyle() {
-        if (!activeCell) return alert('請先點擊要修改的文字格子！');
-        activeCell.style.fontStyle = (activeCell.style.fontStyle === 'italic') ? 'normal' : 'italic';
+        if (!activeCell) return alert('請先點擊要修改的文字格子或反白選取文字！');
+        if (hasValidTextSelection()) {
+            const sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(savedRange);
+            document.execCommand('italic', false, null);
+            if (sel.rangeCount > 0) savedRange = sel.getRangeAt(0).cloneRange();
+        } else {
+            activeCell.style.fontStyle = (activeCell.style.fontStyle === 'italic') ? 'normal' : 'italic';
+        }
+    }
+
+    // ==================== 日期計算與遠期區間修復邏輯 ====================
+    function parseDateLocal(dateStr) {
+        if (!dateStr) return null;
+        const parts = dateStr.split('-');
+        if (parts.length !== 3) return null;
+        const y = parseInt(parts[0], 10);
+        const m = parseInt(parts[1], 10) - 1;
+        const d = parseInt(parts[2], 10);
+        if (isNaN(y) || isNaN(m) || isNaN(d) || y < 1900 || y > 2100) return null;
+        return new Date(y, m, d, 0, 0, 0, 0);
+    }
+
+    function formatDateInput(dateObj) {
+        const y = dateObj.getFullYear();
+        const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+        const d = String(dateObj.getDate()).padStart(2, '0');
+        return `${y}-${m}-${d}`;
+    }
+
+    function onDateInputChange(changedType) {
+        const startInput = document.getElementById('baseStartDate');
+        const endInput = document.getElementById('baseEndDate');
+        let startDate = parseDateLocal(startInput.value);
+        let endDate = parseDateLocal(endInput.value);
+
+        if (!startDate || !endDate) return;
+
+        if (changedType === 'start' && endDate < startDate) {
+            endDate = new Date(startDate);
+            endDate.setDate(startDate.getDate() + 5);
+            endInput.value = formatDateInput(endDate);
+        } else if (changedType === 'end' && endDate < startDate) {
+            startDate = new Date(endDate);
+            startInput.value = formatDateInput(startDate);
+        }
+
+        recalculateDates();
     }
 
     function recalculateDates() {
         const startInputStr = document.getElementById('baseStartDate').value || '2026-04-29';
         const endInputStr = document.getElementById('baseEndDate').value || '2026-05-04';
         
-        let tripStartDate = new Date(startInputStr);
-        let tripEndDate = new Date(endInputStr);
+        let tripStartDate = parseDateLocal(startInputStr);
+        let tripEndDate = parseDateLocal(endInputStr);
         
-        // Ensure end date is not before start date
+        if (!tripStartDate) tripStartDate = new Date(2026, 3, 29);
+        if (!tripEndDate) tripEndDate = new Date(2026, 4, 4);
+
         if (tripEndDate < tripStartDate) {
             tripEndDate = new Date(tripStartDate);
             tripEndDate.setDate(tripStartDate.getDate() + 5); 
-            document.getElementById('baseEndDate').value = tripEndDate.toISOString().split('T')[0];
+            document.getElementById('baseEndDate').value = formatDateInput(tripEndDate);
         }
 
         let diffTime = tripEndDate.getTime() - tripStartDate.getTime();
         let totalDays = Math.round(diffTime / (1000 * 3600 * 24)) + 1;
+
+        if (totalDays > 180) {
+            alert('⚠️ 偵測到旅途區間超過 180 天！系統已自動將回程日期調整為出發日後 30 天，您可再微調回程日期。');
+            tripEndDate = new Date(tripStartDate);
+            tripEndDate.setDate(tripStartDate.getDate() + 29);
+            document.getElementById('baseEndDate').value = formatDateInput(tripEndDate);
+            totalDays = 30;
+        }
         
         const dayOfWeek = tripStartDate.getDay();
         const calendarStartDate = new Date(tripStartDate);
@@ -504,9 +775,7 @@
             if (diffDays >= 0 && diffDays < totalDays) {
                 let presetText = presetItineraryTexts[diffDays] || `(第 ${diffDays + 1} 天行程)\n點此輸入內容...`;
                 cellContent = presetText.replace(/\n/g, '<br>');
-                
-                const pastelColors = ["#FFF9C4", "#E8F5E9", "#E1BEE7", "#E3F2FD", "#FFEBEE"];
-                bgColor = pastelColors[diffDays % 5];
+                bgColor = softPastelPalette[diffDays % softPastelPalette.length];
             }
 
             const td = document.createElement('td');
@@ -534,7 +803,7 @@
 
             itineraryContainer.innerHTML += `
                 <div class="itinerary-day-block">
-                    <div class="itinerary-day-title">📆 ${fullDateStr} - 第 ${j+1} 天詳細行程</div>
+                    <div class="itinerary-day-title editable-cell" contenteditable="true">📆 ${fullDateStr} - 第 ${j+1} 天詳細行程</div>
                     <table class="itinerary-table">
                         <tr><th width="15%">時間</th><th width="35%">行程與景點</th><th width="15%">交通</th><th width="15%">住宿</th><th width="20%">備註</th></tr>
                         <tr>
@@ -545,7 +814,7 @@
                             <td><div class="editable-cell" contenteditable="true">輸入筆記</div></td>
                         </tr>
                     </table>
-                    <div class="reference-section"><div class="editable-cell" contenteditable="true">📂 參考資料與相片擴充區 (點擊此處後，使用上方「插入相片」按鈕上傳照片)...</div></div>
+                    <div class="reference-section"><div class="editable-cell" contenteditable="true">📂 參考資料與相片擴充區 (點擊此處後，使用上方「上傳相片」按鈕插入照片)...</div></div>
                 </div>`;
         }
         
@@ -554,7 +823,7 @@
 
     function updateHotelDates() {
         const startInputStr = document.getElementById('baseStartDate').value || '2026-04-29';
-        const startDate = new Date(startInputStr);
+        const startDate = parseDateLocal(startInputStr) || new Date(2026, 3, 29);
         const rows = document.querySelectorAll('#hotelTableBody tr');
         let currentDate = new Date(startDate);
 
@@ -580,21 +849,36 @@
     }
 
     function applyTheme(themeName) {
+        if (!themes[themeName]) return;
         const root = document.documentElement;
         for (const [prop, val] of Object.entries(themes[themeName])) root.style.setProperty(prop, val);
     }
 
+    // 主標題漸層：只漸變文字顏色，絕不加底色
     function applyTitleGradient(gradientValue) {
         const titleEl = document.getElementById('displayMainTitle');
+        let textSpan = document.getElementById('displayMainTitleText');
+        if (!textSpan && titleEl) {
+            titleEl.innerHTML = `<span id="displayMainTitleText">${titleEl.innerHTML}</span>`;
+            textSpan = document.getElementById('displayMainTitleText');
+        }
+        if (!textSpan) return;
+
+        titleEl.style.background = 'transparent';
+        titleEl.style.backgroundColor = 'transparent';
+
         if (gradientValue === 'none') {
-            titleEl.style.backgroundImage = 'none';
-            titleEl.style.webkitBackgroundClip = 'initial';
-            titleEl.style.webkitTextFillColor = 'initial';
-            titleEl.style.color = 'var(--theme-accent)';
+            textSpan.style.backgroundImage = 'none';
+            textSpan.style.webkitBackgroundClip = 'initial';
+            textSpan.style.backgroundClip = 'initial';
+            textSpan.style.webkitTextFillColor = 'initial';
+            textSpan.style.color = 'var(--theme-accent)';
         } else {
-            titleEl.style.backgroundImage = gradientValue;
-            titleEl.style.webkitBackgroundClip = 'text';
-            titleEl.style.webkitTextFillColor = 'transparent';
+            textSpan.style.backgroundImage = gradientValue;
+            textSpan.style.webkitBackgroundClip = 'text';
+            textSpan.style.backgroundClip = 'text';
+            textSpan.style.webkitTextFillColor = 'transparent';
+            textSpan.style.color = 'transparent';
         }
     }
 
@@ -606,9 +890,59 @@
         document.getElementById(`btn-${tabId}`).classList.add('active');
     }
 
+    // ==================== 航班、移動標籤與三組趣味點列模板 ====================
     function insertHtmlToFocused(html) {
         if(activeCell) activeCell.innerHTML += html;
-        else alert('請先點擊要貼上的格子！');
+        else alert('💡 請先點擊要貼上的文字格子！');
+    }
+
+    function insertOutboundFlight() {
+        const template = `<br><br>✈️ <b>去程航班</b>` +
+                         `<br>預訂編號：` +
+                         `<br>航班編號：` +
+                         `<br>航線：___ 機場 ➔ ___ 機場` +
+                         `<br>起降時間：00:00 - 00:00` +
+                         `<br>飛行時間：__小時__分` +
+                         `<br>座位：`;
+        insertHtmlToFocused(template);
+    }
+
+    function insertInboundFlight() {
+        const template = `<br><br>✈️ <b>回程航班</b>` +
+                         `<br>預訂編號：` +
+                         `<br>航班編號：` +
+                         `<br>航線：___ 機場 ➔ ___ 機場` +
+                         `<br>起降時間：00:00 - 00:00` +
+                         `<br>飛行時間：__小時__分` +
+                         `<br>座位：`;
+        insertHtmlToFocused(template);
+    }
+
+    function insertTransitTemplate() {
+        const template = `<br><br>🔄 <b>【移動】</b> ___ ➔ ___` +
+                         `<br>⏱️ 所需時間：約 __ 小時 __ 分鐘 (交通：___)`;
+        insertHtmlToFocused(template);
+    }
+
+    function insertFunBullets(styleType) {
+        let template = '';
+        if (styleType === 1) {
+            template = `<br><br>🌟 <b>今日打卡亮點：</b>` +
+                       `<br>✦ 景點 1：` +
+                       `<br>✦ 景點 2：` +
+                       `<br>✦ 景點 3：`;
+        } else if (styleType === 2) {
+            template = `<br><br>🐾 <b>漫步探索路線：</b>` +
+                       `<br>🚩 第一站：` +
+                       `<br>📸 第二站：` +
+                       `<br>☕ 歇腳處：`;
+        } else if (styleType === 3) {
+            template = `<br><br>💖 <b>必去私房清單：</b>` +
+                       `<br>➊ 必看景點：` +
+                       `<br>➋ 必吃美食：` +
+                       `<br>➌ 必買手信：`;
+        }
+        insertHtmlToFocused(template);
     }
 
     function triggerImageUpload() {
@@ -628,6 +962,7 @@
         event.target.value = ''; 
     }
 
+    // ==================== 第三頁 Check List 渲染、刪除與恢復功能 ====================
     function renderChecklist() {
         const container = document.getElementById('checklistGridContainer');
         container.innerHTML = '';
@@ -639,30 +974,167 @@
             <li class="checklist-item-row">
                 <input type="checkbox">
                 <span class="editable-cell" contenteditable="true" style="flex-grow:1; min-height:20px;">${item}</span>
-                <button class="delete-item-btn no-print" onclick="this.parentElement.remove()">✖</button>
+                <button class="delete-item-btn no-print" onclick="deleteChecklistItem(this)">✖</button>
             </li>
         `).join('');
         
-        container.innerHTML += `
-            <div class="checklist-card">
+        container.insertAdjacentHTML('beforeend', `
+            <div class="checklist-card" data-deleted-items="[]">
                 <h4 class="checklist-category-title">
                     <span>📋 <span class="editable-cell" contenteditable="true">${categoryName}</span></span>
-                    <button class="action-btn no-print" style="padding:2px 6px; font-size:11px; background-color:#D32F2F;" onclick="this.closest('.checklist-card').remove()">刪除</button>
+                    <span class="no-print" style="display:inline-flex; gap:5px; align-items:center;">
+                        <button class="action-btn" style="padding:2px 8px; font-size:11px; background-color:#5A8F76;" onclick="restoreChecklistItem(this)" title="恢復此分類剛剛刪除的項目">↩ 恢復</button>
+                        <button class="action-btn" style="padding:2px 8px; font-size:11px; background-color:#C85A5A;" onclick="deleteChecklistCategory(this)">刪除</button>
+                    </span>
                 </h4>
                 <ul style="list-style:none; padding:0; margin:0;">${itemsHtml}</ul>
                 <div class="checklist-add-item-form no-print">
                     <input type="text" placeholder="新增物品項目..." style="flex-grow:1;">
                     <button class="action-btn" onclick="addChecklistItem(this)">＋ 新增</button>
                 </div>
-            </div>`;
+            </div>`);
     }
 
     function addChecklistItem(btn) {
         const text = btn.previousElementSibling.value.trim();
         if(text) {
-            btn.closest('.checklist-card').querySelector('ul').insertAdjacentHTML('beforeend', `<li class="checklist-item-row"><input type="checkbox"><span class="editable-cell" contenteditable="true" style="flex-grow:1;">${text}</span><button class="delete-item-btn no-print" onclick="this.parentElement.remove()">✖</button></li>`);
+            btn.closest('.checklist-card').querySelector('ul').insertAdjacentHTML('beforeend', `<li class="checklist-item-row"><input type="checkbox"><span class="editable-cell" contenteditable="true" style="flex-grow:1; min-height:20px;">${text}</span><button class="delete-item-btn no-print" onclick="deleteChecklistItem(this)">✖</button></li>`);
             btn.previousElementSibling.value = '';
         }
+    }
+
+    // 刪除單一物品項目並記錄到該卡片的歷史堆疊中
+    function deleteChecklistItem(btn) {
+        const li = btn.closest('.checklist-item-row');
+        const card = btn.closest('.checklist-card');
+        if (!li || !card) return;
+
+        // 同步保存打勾狀態
+        const checkbox = li.querySelector('input[type="checkbox"]');
+        if (checkbox) {
+            if (checkbox.checked) checkbox.setAttribute('checked', 'checked');
+            else checkbox.removeAttribute('checked');
+        }
+
+        const ul = card.querySelector('ul');
+        const index = Array.from(ul.children).indexOf(li);
+
+        let stack = [];
+        try { stack = JSON.parse(card.getAttribute('data-deleted-items') || '[]'); } catch(e) { stack = []; }
+        stack.push({ html: li.outerHTML, index: index });
+        card.setAttribute('data-deleted-items', JSON.stringify(stack));
+
+        li.remove();
+    }
+
+    // 恢復該分類卡片中被刪除的物品項目
+    function restoreChecklistItem(btn) {
+        const card = btn.closest('.checklist-card');
+        if (!card) return;
+
+        let stack = [];
+        try { stack = JSON.parse(card.getAttribute('data-deleted-items') || '[]'); } catch(e) { stack = []; }
+
+        const ul = card.querySelector('ul');
+
+        if (stack.length > 0) {
+            const lastDeleted = stack.pop();
+            card.setAttribute('data-deleted-items', JSON.stringify(stack));
+
+            const temp = document.createElement('div');
+            temp.innerHTML = lastDeleted.html;
+            const restoredLi = temp.firstElementChild;
+
+            const delBtn = restoredLi.querySelector('.delete-item-btn');
+            if (delBtn) delBtn.setAttribute('onclick', 'deleteChecklistItem(this)');
+
+            if (lastDeleted.index >= 0 && lastDeleted.index < ul.children.length) {
+                ul.insertBefore(restoredLi, ul.children[lastDeleted.index]);
+            } else {
+                ul.appendChild(restoredLi);
+            }
+        } else {
+            // 若無單項刪除紀錄，檢查是否為預設分類並自動補回缺少的預設項目
+            const titleSpans = card.querySelectorAll('.checklist-category-title .editable-cell');
+            const catName = titleSpans.length > 0 ? titleSpans[0].innerText.trim() : '';
+            if (fullChecklistData[catName]) {
+                const currentItems = Array.from(ul.querySelectorAll('.editable-cell')).map(el => el.innerText.trim());
+                const missingItems = fullChecklistData[catName].filter(item => !currentItems.includes(item));
+                if (missingItems.length > 0) {
+                    missingItems.forEach(item => {
+                        ul.insertAdjacentHTML('beforeend', `
+                            <li class="checklist-item-row">
+                                <input type="checkbox">
+                                <span class="editable-cell" contenteditable="true" style="flex-grow:1; min-height:20px;">${item}</span>
+                                <button class="delete-item-btn no-print" onclick="deleteChecklistItem(this)">✖</button>
+                            </li>
+                        `);
+                    });
+                    return;
+                }
+            }
+            alert('💡 此分類目前沒有已刪除的項目可供恢復！');
+        }
+    }
+
+    // 刪除整張分類卡片並記錄，以便隨時恢復
+    function deleteChecklistCategory(btn) {
+        const card = btn.closest('.checklist-card');
+        const container = document.getElementById('checklistGridContainer');
+        if (!card || !container) return;
+
+        card.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            if (cb.checked) cb.setAttribute('checked', 'checked');
+            else cb.removeAttribute('checked');
+        });
+
+        const index = Array.from(container.children).indexOf(card);
+        deletedCategoriesStack.push({ html: card.outerHTML, index: index });
+        card.remove();
+    }
+
+    // 恢復剛剛刪除的整張分類卡片
+    function restoreChecklistCategory() {
+        if (deletedCategoriesStack.length === 0) {
+            return alert('💡 目前沒有已刪除的分類卡片可供恢復！\n(若要恢復某分類內的單一物品，請點擊該卡片右上角的「↩ 恢復」按鈕)');
+        }
+        const container = document.getElementById('checklistGridContainer');
+        const lastDeleted = deletedCategoriesStack.pop();
+        const temp = document.createElement('div');
+        temp.innerHTML = lastDeleted.html;
+        const restoredCard = temp.firstElementChild;
+
+        if (lastDeleted.index >= 0 && lastDeleted.index < container.children.length) {
+            container.insertBefore(restoredCard, container.children[lastDeleted.index]);
+        } else {
+            container.appendChild(restoredCard);
+        }
+    }
+
+    // 升級舊版存檔中的卡片，自動補齊「↩ 恢復」按鈕與事件綁定
+    function upgradeExistingChecklistCards() {
+        document.querySelectorAll('.checklist-card').forEach(card => {
+            if (!card.hasAttribute('data-deleted-items')) {
+                card.setAttribute('data-deleted-items', '[]');
+            }
+            card.querySelectorAll('.delete-item-btn').forEach(btn => {
+                btn.setAttribute('onclick', 'deleteChecklistItem(this)');
+            });
+            const titleEl = card.querySelector('.checklist-category-title');
+            if (titleEl && !titleEl.innerHTML.includes('restoreChecklistItem')) {
+                const oldDelBtn = titleEl.querySelector('button');
+                if (oldDelBtn) {
+                    const btnWrapper = document.createElement('span');
+                    btnWrapper.className = 'no-print';
+                    btnWrapper.style.cssText = 'display:inline-flex; gap:5px; align-items:center;';
+                    btnWrapper.innerHTML = `
+                        <button class="action-btn" style="padding:2px 8px; font-size:11px; background-color:#5A8F76;" onclick="restoreChecklistItem(this)" title="恢復此分類剛剛刪除的項目">↩ 恢復</button>
+                        <button class="action-btn" style="padding:2px 8px; font-size:11px; background-color:#C85A5A;" onclick="deleteChecklistCategory(this)">刪除</button>
+                    `;
+                    oldDelBtn.replaceWith(btnWrapper);
+                }
+            }
+        });
     }
 
     function addChecklistCategory() {
@@ -672,7 +1144,7 @@
     }
 
     function addNewHotelRow() {
-        document.getElementById('hotelTableBody').insertAdjacentHTML('beforeend', `<tr><td><div class="editable-cell" contenteditable="true">1 Day</div></td><td><div class="editable-cell" contenteditable="true">YYYY/MM/DD</div></td><td><div class="editable-cell" contenteditable="true">點此輸入飯店名稱...</div></td><td class="no-print" style="text-align:center;"><button class="action-btn" style="background-color:#D32F2F;" onclick="this.parentElement.parentElement.remove(); updateHotelDates();">刪除</button></td></tr>`);
+        document.getElementById('hotelTableBody').insertAdjacentHTML('beforeend', `<tr><td><div class="editable-cell" contenteditable="true">1 Day</div></td><td><div class="editable-cell" contenteditable="true">YYYY/MM/DD</div></td><td><div class="editable-cell" contenteditable="true">點此輸入飯店名稱...</div></td><td class="no-print" style="text-align:center;"><button class="action-btn" style="background-color:#C85A5A;" onclick="this.parentElement.parentElement.remove(); updateHotelDates();">刪除</button></td></tr>`);
         updateHotelDates();
     }
 
@@ -684,6 +1156,7 @@
             const newSpan = document.createElement('span');
             newSpan.className = 'emoji-item';
             newSpan.textContent = val;
+            newSpan.onmousedown = function(e) { e.preventDefault(); };
             newSpan.onclick = function() { insertHtmlToFocused(val); };
             list.appendChild(newSpan);
             input.value = '';
@@ -723,7 +1196,7 @@
                     c.style.boxSizing = 'border-box';
                     c.style.padding = '4px 6px'; 
                     c.style.marginBottom = '5px'; 
-                    c.style.border = '1px solid #555'; 
+                    c.style.border = '1px solid #888'; 
                     c.style.borderRadius = '0'; 
                 });
                 
@@ -731,7 +1204,7 @@
                     t.style.fontSize = '13px'; 
                     t.style.marginBottom = '2px'; 
                     t.style.paddingBottom = '2px';
-                    t.style.borderBottom = '1px solid #555';
+                    t.style.borderBottom = '1px solid #888';
                 });
                 
                 elementToExport.querySelectorAll('.checklist-item-row').forEach(r => { 
@@ -782,11 +1255,11 @@
             ${styles}
             <style>
                 table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
-                th, td { border: 1px solid #B5B5B5; padding: 8px; text-align: left; vertical-align: top; }
-                th { background-color: #8F9E8B; color: white; font-weight: bold; }
-                .itinerary-day-title { background-color: #6E5A4B; color: white; padding: 10px; font-weight: bold; font-size: 16px; margin-bottom: 5px; }
-                .checklist-card { border: 1px solid #B5B5B5; margin-bottom: 15px; padding: 10px; }
-                .checklist-category-title { border-bottom: 2px solid #8F9E8B; color: #6E5A4B; font-weight: bold; font-size: 16px; margin-bottom: 10px; }
+                th, td { border: 1px solid #DCD7CC; padding: 8px; text-align: left; vertical-align: top; }
+                th { background-color: transparent; color: #5C5346; font-weight: bold; border-bottom: 2px solid #7C9082; }
+                .itinerary-day-title { background-color: transparent; color: #5C5346; padding: 8px 0; font-weight: bold; font-size: 16px; margin-bottom: 8px; border-bottom: 2px solid #7C9082; }
+                .checklist-card { border: 1px solid #DCD7CC; margin-bottom: 15px; padding: 10px; }
+                .checklist-category-title { border-bottom: 2px solid #7C9082; color: #5C5346; font-weight: bold; font-size: 16px; margin-bottom: 10px; }
                 .checklist-item-row { margin-bottom: 5px; }
                 body { font-family: 'PingFang HK', 'Microsoft JhengHei', sans-serif; }
             </style>
